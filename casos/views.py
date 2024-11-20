@@ -3,7 +3,8 @@ from .models import CasoClinico
 from django.contrib.auth.decorators import login_required
 from .forms import CasoClinicoForm
 from django.contrib import messages
-
+from usuarios.models import Perfil
+from django.core.paginator import Paginator
 
 def lista_casos(request):
     casos = CasoClinico.objects.filter(publicado=True)
@@ -56,3 +57,13 @@ def deletar_caso(request, pk):
         return redirect('lista_casos')
     return render(request, 'casos/confirmar_deletar.html', {'caso': caso})
 
+@login_required
+def mural(request):
+    perfil = request.user.perfil
+    perfis_seguidos = perfil.seguindo.all()
+    usuarios_seguidos = [p.user for p in perfis_seguidos]
+    casos_list = CasoClinico.objects.filter(autor__in=usuarios_seguidos, publicado=True).order_by('-data_publicacao')
+    paginator = Paginator(casos_list, 5)  # 5 casos por página
+    page_number = request.GET.get('page')
+    casos = CasoClinico.objects.filter(autor__in=usuarios_seguidos, publicado=True).order_by('-data_publicacao')
+    return render(request, 'casos/mural.html', {'casos': casos})

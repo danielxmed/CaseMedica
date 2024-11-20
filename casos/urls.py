@@ -7,4 +7,5 @@ urlpatterns = [
     path('caso/novo/', views.novo_caso, name='novo_caso'),
     path('caso/<int:pk>/editar/', views.editar_caso, name='editar_caso'),
     path('caso/<int:pk>/deletar/', views.deletar_caso, name='deletar_caso'),
+    path('mural/', views.mural, name='mural'),
 ]
