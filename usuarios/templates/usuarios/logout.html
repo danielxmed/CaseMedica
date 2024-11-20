@@ -1,6 +1,8 @@
 <!-- usuarios/templates/usuarios/logout.html -->
 {% extends 'base.html' %}
 {% block content %}
-  <h2>Você saiu da sua conta</h2>
-  <a href="{% url 'login' %}">Entrar novamente</a>
+<div class="container text-center">
+  <h2 style="color: #4CAF50; font-weight: 500;">Você saiu da sua conta</h2>
+  <a href="{% url 'login' %}" class="btn btn-link" style="color: #4CAF50; text-decoration: none;">Entrar novamente</a>
+</div>
 {% endblock %}

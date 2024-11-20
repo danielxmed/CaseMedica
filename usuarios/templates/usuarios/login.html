@@ -1,10 +1,12 @@
 <!-- usuarios/templates/usuarios/login.html -->
 {% extends 'base.html' %}
 {% block content %}
-  <h2>Entrar</h2>
-  <form method="POST">
+<div class="container">
+  <h2 class="text-center" style="color: #4CAF50; font-weight: 500;">Entrar</h2>
+  <form method="POST" class="form-style">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Entrar</button>
+    <button type="submit" class="btn btn-primary" style="background-color: #4CAF50; border: none;">Entrar</button>
   </form>
+</div>
 {% endblock %}

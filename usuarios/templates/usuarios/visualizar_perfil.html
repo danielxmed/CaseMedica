@@ -1,11 +1,14 @@
 <!-- usuarios/templates/usuarios/visualizar_perfil.html -->
 {% extends 'base.html' %}
-
 {% block content %}
-  <h2>Perfil de {{ user.username }}</h2>
-  <p><strong>Nome:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-  <p><strong>Formação:</strong> {{ user.perfil.formacao }}</p>
-  <p><strong>Afiliações:</strong> {{ user.perfil.afiliacoes }}</p>
-  <p><strong>Especialidades:</strong> {{ user.perfil.especialidades }}</p>
-  <p><strong>Bio:</strong> {{ user.perfil.bio }}</p>
+<div class="container">
+  <h2 class="text-center" style="color: #4CAF50; font-weight: 500;">Perfil de {{ user.username }}</h2>
+  <div class="profile-info" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+    <p><strong style="color: #4CAF50;">Nome:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong style="color: #4CAF50;">Formação:</strong> {{ user.perfil.formacao }}</p>
+    <p><strong style="color: #4CAF50;">Afiliações:</strong> {{ user.perfil.afiliacoes }}</p>
+    <p><strong style="color: #4CAF50;">Especialidades:</strong> {{ user.perfil.especialidades }}</p>
+    <p><strong style="color: #4CAF50;">Bio:</strong> {{ user.perfil.bio }}</p>
+  </div>
+</div>
 {% endblock %}

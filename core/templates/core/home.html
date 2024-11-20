@@ -3,9 +3,56 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CaseMedica - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bem-vindo ao CaseMedica</h1>
+    <div class="container">
+        <h1>Bem-vindo ao <strong>CaseMedica</strong></h1>
+        <p>Sua rede social para médicos e médicas, conectando inovação e conhecimento científico.</p>
+        <a href="{% url 'signup' %}" class="btn">Comece agora</a>
+    </div>
 </body>
 </html>
