@@ -1,0 +1,13 @@
+<!-- usuarios/templates/usuarios/perfil.html -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2>Editar Perfil</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ u_form|crispy }}
+    {{ p_form|crispy }}
+    <button type="submit">Salvar Alterações</button>
+  </form>
+{% endblock %}

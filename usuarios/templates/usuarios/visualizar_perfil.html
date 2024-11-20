@@ -1,0 +1,11 @@
+<!-- usuarios/templates/usuarios/visualizar_perfil.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Perfil de {{ user.username }}</h2>
+  <p><strong>Nome:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+  <p><strong>Formação:</strong> {{ user.perfil.formacao }}</p>
+  <p><strong>Afiliações:</strong> {{ user.perfil.afiliacoes }}</p>
+  <p><strong>Especialidades:</strong> {{ user.perfil.especialidades }}</p>
+  <p><strong>Bio:</strong> {{ user.perfil.bio }}</p>
+{% endblock %}
