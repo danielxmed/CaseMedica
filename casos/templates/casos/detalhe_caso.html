@@ -1,30 +1,91 @@
+<!-- casos/templates/casos/detalhe_caso.html -->
 {% extends 'base.html' %}
-{% block content %}
-<div class="container">
-  <h2 style="color: #4CAF50;">{{ caso.titulo }}</h2>
-  <p>Publicado em <strong>{{ caso.data_publicacao }}</strong> por <strong>{{ caso.autor.username }}</strong></p>
-  <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
-    <p>{{ caso.descricao }}</p>
+{% load crispy_forms_tags %}
 
-    {% if caso.diagnostico %}
-      <h3 style="color: #4CAF50;">Diagnóstico</h3>
-      <p>{{ caso.diagnostico }}</p>
+{% block content %}
+  <h2>{{ caso.titulo }}</h2>
+  <p>
+    Publicado em {{ caso.data_publicacao|date:"d/m/Y H:i" }} por 
+    <a href="{% url 'visualizar_perfil' caso.autor.username %}">{{ caso.autor.username }}</a>
+  </p>
+  <p>{{ caso.descricao }}</p>
+
+  {% if caso.diagnostico %}
+    <h3>Diagnóstico</h3>
+    <p>{{ caso.diagnostico }}</p>
+  {% endif %}
+
+  {% if caso.tratamento %}
+    <h3>Tratamento</h3>
+    <p>{{ caso.tratamento }}</p>
+  {% endif %}
+
+  {% if caso.conclusao %}
+    <h3>Conclusão</h3>
+    <p>{{ caso.conclusao }}</p>
+  {% endif %}
+
+  <!-- Botões de Curtir e Comentários -->
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <!-- Botão de Curtir -->
+    <form action="{% url 'curtir_caso' caso.pk %}" method="POST">
+      {% csrf_token %}
+      {% if user.is_authenticated %}
+        {% if user in caso.curtidas.all %}
+          <button type="submit" class="btn btn-danger">
+            <i class="bi bi-heart-fill"></i> Descurtir ({{ caso.total_curtidas }})
+          </button>
+        {% else %}
+          <button type="submit" class="btn btn-outline-danger">
+            <i class="bi bi-heart"></i> Curtir ({{ caso.total_curtidas }})
+          </button>
+        {% endif %}
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-danger">
+          <i class="bi bi-heart"></i> Curtir ({{ caso.total_curtidas }})
+        </a>
+      {% endif %}
+    </form>
+    <!-- Contador de Comentários -->
+    <a href="#comentarios" class="btn btn-secondary">
+      Comentários ({{ caso.comentarios.count }})
+    </a>
+  </div>
+
+  <!-- Seção de Comentários -->
+  <div id="comentarios" class="mt-5">
+    <h3>Comentários</h3>
+    <!-- Formulário para Adicionar Comentário -->
+    {% if user.is_authenticated %}
+      <form action="{% url 'adicionar_comentario' caso.pk %}" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary mt-2">Enviar Comentário</button>
+      </form>
+    {% else %}
+      <p>Faça <a href="{% url 'login' %}">login</a> para adicionar um comentário.</p>
     {% endif %}
-    {% if caso.tratamento %}
-      <h3 style="color: #4CAF50;">Tratamento</h3>
-      <p>{{ caso.tratamento }}</p>
-    {% endif %}
-    {% if caso.conclusao %}
-      <h3 style="color: #4CAF50;">Conclusão</h3>
-      <p>{{ caso.conclusao }}</p>
+
+    <!-- Lista de Comentários -->
+    {% if caso.comentarios.exists %}
+      <ul class="list-group mt-4">
+        {% for comentario in caso.comentarios.all %}
+          <li class="list-group-item">
+            <strong>{{ comentario.autor.username }}</strong> em {{ comentario.data_publicacao|date:"d/m/Y H:i" }}
+            <p>{{ comentario.conteudo }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="mt-4">Ainda não há comentários.</p>
     {% endif %}
   </div>
 
+  <!-- Botões de Editar e Deletar (se o usuário for o autor) -->
   {% if user == caso.autor %}
-    <div class="mt-3">
-      <a href="{% url 'editar_caso' caso.pk %}" class="btn btn-secondary">Editar</a>
+    <div class="mt-4">
+      <a href="{% url 'editar_caso' caso.pk %}" class="btn btn-warning">Editar</a>
       <a href="{% url 'deletar_caso' caso.pk %}" class="btn btn-danger">Deletar</a>
     </div>
   {% endif %}
-</div>
 {% endblock %}

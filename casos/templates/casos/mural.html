@@ -1,5 +1,6 @@
 <!-- casos/templates/casos/mural.html -->
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
   <h2>Mural</h2>
@@ -7,13 +8,40 @@
     {% for caso in casos %}
       <div class="card mt-4">
         <div class="card-body">
-          <h3 class="card-title"><a href="{% url 'detalhe_caso' caso.pk %}">{{ caso.titulo }}</a></h3>
+          <h3 class="card-title">
+            <a href="{% url 'detalhe_caso' caso.pk %}">{{ caso.titulo }}</a>
+          </h3>
           <h6 class="card-subtitle mb-2 text-muted">
             Publicado em {{ caso.data_publicacao|date:"d/m/Y H:i" }} por 
             <a href="{% url 'visualizar_perfil' caso.autor.username %}">{{ caso.autor.username }}</a>
           </h6>
           <p class="card-text">{{ caso.descricao|truncatewords:30 }}</p>
-          <a href="{% url 'detalhe_caso' caso.pk %}" class="btn btn-primary">Leia mais</a>
+
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <!-- Botão de Curtir -->
+            <form action="{% url 'curtir_caso' caso.pk %}" method="POST">
+              {% csrf_token %}
+              {% if user.is_authenticated %}
+                {% if user in caso.curtidas.all %}
+                  <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-heart-fill"></i> Descurtir ({{ caso.total_curtidas }})
+                  </button>
+                {% else %}
+                  <button type="submit" class="btn btn-outline-danger">
+                    <i class="bi bi-heart"></i> Curtir ({{ caso.total_curtidas }})
+                  </button>
+                {% endif %}
+              {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-danger">
+                  <i class="bi bi-heart"></i> Curtir ({{ caso.total_curtidas }})
+                </a>
+              {% endif %}
+            </form>
+            <!-- Link para Comentários -->
+            <a href="{% url 'detalhe_caso' caso.pk %}#comentarios" class="btn btn-secondary">
+              Comentários ({{ caso.comentarios.count }})
+            </a>
+          </div>
         </div>
       </div>
     {% endfor %}
