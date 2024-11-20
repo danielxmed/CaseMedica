@@ -28,6 +28,9 @@
                 <a class="nav-link" href="{% url 'perfil' %}">Meu Perfil</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{% url 'buscar_usuarios' %}">Buscar Usuários</a>
+              </li>
+              <li class="nav-item">
                 <form action="{% url 'logout' %}" method="POST" style="display:inline;">
                   {% csrf_token %}
                   <button type="submit" class="nav-link btn btn-link" style="display:inline; padding:0; border:none; background:none;">Sair</button>

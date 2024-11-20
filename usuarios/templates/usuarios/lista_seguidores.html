@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Seguidores de {{ user.username }}</h2>
+  {% if seguidores %}
+    <ul>
+      {% for seguidor in seguidores %}
+        <li><a href="{% url 'visualizar_perfil' seguidor.username %}">{{ seguidor.username }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{{ user.username }} não possui seguidores.</p>
+  {% endif %}
+{% endblock %}

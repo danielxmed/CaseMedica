@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Buscar Usuários</h2>
+  <form method="GET">
+    <input type="text" name="q" placeholder="Buscar por nome de usuário" value="{{ query }}">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </form>
+
+  {% if resultados is not None %}
+    <h3>Resultados da Busca:</h3>
+    {% if resultados %}
+      <ul>
+        {% for user in resultados %}
+          <li><a href="{% url 'visualizar_perfil' user.username %}">{{ user.username }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Nenhum usuário encontrado.</p>
+    {% endif %}
+  {% endif %}
+{% endblock %}

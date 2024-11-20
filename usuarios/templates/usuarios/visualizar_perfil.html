@@ -1,14 +1,22 @@
-<!-- usuarios/templates/usuarios/visualizar_perfil.html -->
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container">
-  <h2 class="text-center" style="color: #4CAF50; font-weight: 500;">Perfil de {{ user.username }}</h2>
-  <div class="profile-info" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
-    <p><strong style="color: #4CAF50;">Nome:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-    <p><strong style="color: #4CAF50;">Formação:</strong> {{ user.perfil.formacao }}</p>
-    <p><strong style="color: #4CAF50;">Afiliações:</strong> {{ user.perfil.afiliacoes }}</p>
-    <p><strong style="color: #4CAF50;">Especialidades:</strong> {{ user.perfil.especialidades }}</p>
-    <p><strong style="color: #4CAF50;">Bio:</strong> {{ user.perfil.bio }}</p>
-  </div>
-</div>
+  <h2>Perfil de {{ user.username }}</h2>
+  <p><strong>Nome:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+  <p><strong>Formação:</strong> {{ user.perfil.formacao }}</p>
+  <p><strong>Afiliações:</strong> {{ user.perfil.afiliacoes }}</p>
+  <p><strong>Especialidades:</strong> {{ user.perfil.especialidades }}</p>
+  <p><strong>Bio:</strong> {{ user.perfil.bio }}</p>
+  <p><strong>Seguidores:</strong> <a href="{% url 'lista_seguidores' user.username %}">{{ user.perfil.total_seguidores }}</a></p>
+  <p><strong>Seguindo:</strong> <a href="{% url 'lista_seguindo' user.username %}">{{ user.perfil.total_seguindo }}</a></p>  
+  
+  {% if user != request.user %}
+    {% if request.user in user.perfil.seguidores.all %}
+      <a href="{% url 'deixar_de_seguir_usuario' user.username %}" class="btn btn-secondary">Deixar de Seguir</a>
+    {% else %}
+      <a href="{% url 'seguir_usuario' user.username %}" class="btn btn-primary">Seguir</a>
+    {% endif %}
+  {% else %}
+    <p>Este é o seu perfil.</p>
+  {% endif %}
 {% endblock %}

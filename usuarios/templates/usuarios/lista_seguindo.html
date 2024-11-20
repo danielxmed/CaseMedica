@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ user.username }} está seguindo</h2>
+  {% if seguindo %}
+    <ul>
+      {% for seguido in seguindo %}
+        <li><a href="{% url 'visualizar_perfil' seguido.user.username %}">{{ seguido.user.username }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{{ user.username }} não está seguindo ninguém.</p>
+  {% endif %}
+{% endblock %}
