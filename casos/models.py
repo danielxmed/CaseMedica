@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
+def upload_to(instance, filename):
+    return f'casos/{instance.autor.username}/{filename}'
+
+
 class CasoClinico(models.Model):
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=200)
@@ -11,6 +16,8 @@ class CasoClinico(models.Model):
     tratamento = models.TextField(blank=True, null=True)
     conclusao = models.TextField(blank=True, null=True)
     publicado = models.BooleanField(default=True)
+    imagem = models.ImageField(upload_to=upload_to, blank=True, null=True)
+    legenda_imagem = models.CharField(max_length=255, blank=True, null=True)
     curtidas = models.ManyToManyField(User, related_name='casos_curtidos', blank=True)
 
     def __str__(self):

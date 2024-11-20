@@ -66,6 +66,16 @@
       <p>Faça <a href="{% url 'login' %}">login</a> para adicionar um comentário.</p>
     {% endif %}
 
+    <!-- Imagem -->
+    {% if caso.imagem %}
+  <div class="mt-4">
+    <img src="{{ caso.imagem.url }}" class="img-fluid" alt="Imagem do caso">
+    {% if caso.legenda_imagem %}
+      <p class="text-muted">{{ caso.legenda_imagem }}</p>
+    {% endif %}
+  </div>
+    {% endif %}
+
     <!-- Lista de Comentários -->
     {% if caso.comentarios.exists %}
       <ul class="list-group mt-4">

@@ -3,101 +3,109 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <h2>Mural</h2>
-  {% if casos %}
-    {% for caso in casos %}
-      <div class="card mt-4">
-        <div class="card-body">
-          <h3 class="card-title">
-            <a href="{% url 'detalhe_caso' caso.pk %}">{{ caso.titulo }}</a>
-          </h3>
-          <h6 class="card-subtitle mb-2 text-muted">
-            Publicado em {{ caso.data_publicacao|date:"d/m/Y H:i" }} por 
-            <a href="{% url 'visualizar_perfil' caso.autor.username %}">{{ caso.autor.username }}</a>
-          </h6>
-          <p class="card-text">{{ caso.descricao|truncatewords:30 }}</p>
+  <div class="container mt-5">
+    <h2>Mural</h2>
+    {% if casos %}
+      {% for caso in casos %}
+        <div class="card mt-4">
+          {% if caso.imagem %}
+            <img src="{{ caso.imagem.url }}" class="card-img-top" alt="Imagem do caso">
+          {% endif %}
+          <div class="card-body">
+            <h3 class="card-title">
+              <a href="{% url 'detalhe_caso' caso.pk %}">{{ caso.titulo }}</a>
+            </h3>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Publicado em {{ caso.data_publicacao|date:"d/m/Y H:i" }} por 
+              <a href="{% url 'visualizar_perfil' caso.autor.username %}">{{ caso.autor.username }}</a>
+            </h6>
+            <p class="card-text">{{ caso.descricao|truncatewords:30 }}</p>
+            {% if caso.legenda_imagem %}
+              <p class="card-text"><small class="text-muted">{{ caso.legenda_imagem }}</small></p>
+            {% endif %}
 
-          <div class="d-flex justify-content-between align-items-center mt-3">
-            <!-- Botão de Curtir -->
-            <form action="{% url 'curtir_caso' caso.pk %}" method="POST">
-              {% csrf_token %}
-              {% if user.is_authenticated %}
-                {% if user in caso.curtidas.all %}
-                  <button type="submit" class="btn btn-danger">
-                    <i class="bi bi-heart-fill"></i> Descurtir ({{ caso.total_curtidas }})
-                  </button>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <!-- Botão de Curtir -->
+              <form action="{% url 'curtir_caso' caso.pk %}" method="POST">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                  {% if user in caso.curtidas.all %}
+                    <button type="submit" class="btn btn-danger">
+                      <i class="bi bi-heart-fill"></i> Descurtir ({{ caso.total_curtidas }})
+                    </button>
+                  {% else %}
+                    <button type="submit" class="btn btn-outline-danger">
+                      <i class="bi bi-heart"></i> Curtir ({{ caso.total_curtidas }})
+                    </button>
+                  {% endif %}
                 {% else %}
-                  <button type="submit" class="btn btn-outline-danger">
+                  <a href="{% url 'login' %}" class="btn btn-outline-danger">
                     <i class="bi bi-heart"></i> Curtir ({{ caso.total_curtidas }})
-                  </button>
+                  </a>
                 {% endif %}
-              {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-danger">
-                  <i class="bi bi-heart"></i> Curtir ({{ caso.total_curtidas }})
-                </a>
-              {% endif %}
-            </form>
-            <!-- Link para Comentários -->
-            <a href="{% url 'detalhe_caso' caso.pk %}#comentarios" class="btn btn-secondary">
-              Comentários ({{ caso.comentarios.count }})
-            </a>
+              </form>
+              <!-- Link para Comentários -->
+              <a href="{% url 'detalhe_caso' caso.pk %}#comentarios" class="btn btn-secondary">
+                Comentários ({{ caso.comentarios.count }})
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
 
-    <!-- Controles de Paginação -->
-    <nav aria-label="Navegação de página" class="mt-4">
-      <ul class="pagination justify-content-center">
-        {% if casos.has_previous %}
-          <li class="page-item">
-            <a class="page-link" href="?page=1" aria-label="Primeira">
-              <span aria-hidden="true">&laquo;&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={{ casos.previous_page_number }}" aria-label="Anterior">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-        {% else %}
-          <li class="page-item disabled">
-            <span class="page-link">&laquo;&laquo;</span>
-          </li>
-          <li class="page-item disabled">
-            <span class="page-link">&laquo;</span>
-          </li>
-        {% endif %}
+      <!-- Controles de Paginação -->
+      <nav aria-label="Navegação de página" class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if casos.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page=1" aria-label="Primeira">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ casos.previous_page_number }}" aria-label="Anterior">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">&laquo;&laquo;</span>
+            </li>
+            <li class="page-item disabled">
+              <span class="page-link">&laquo;</span>
+            </li>
+          {% endif %}
 
-        <li class="page-item disabled">
-          <span class="page-link">
-            Página {{ casos.number }} de {{ casos.paginator.num_pages }}
-          </span>
-        </li>
+          <li class="page-item disabled">
+            <span class="page-link">
+              Página {{ casos.number }} de {{ casos.paginator.num_pages }}
+            </span>
+          </li>
 
-        {% if casos.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ casos.next_page_number }}" aria-label="Próxima">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={{ casos.paginator.num_pages }}" aria-label="Última">
-              <span aria-hidden="true">&raquo;&raquo;</span>
-            </a>
-          </li>
-        {% else %}
-          <li class="page-item disabled">
-            <span class="page-link">&raquo;</span>
-          </li>
-          <li class="page-item disabled">
-            <span class="page-link">&raquo;&raquo;</span>
-          </li>
-        {% endif %}
-      </ul>
-    </nav>
-  {% else %}
-    <p>Você ainda não está seguindo ninguém ou os usuários que você segue ainda não postaram casos clínicos.</p>
-    <p><a href="{% url 'buscar_usuarios' %}">Encontre usuários para seguir.</a></p>
-  {% endif %}
+          {% if casos.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ casos.next_page_number }}" aria-label="Próxima">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ casos.paginator.num_pages }}" aria-label="Última">
+                <span aria-hidden="true">&raquo;&raquo;</span>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">&raquo;</span>
+            </li>
+            <li class="page-item disabled">
+              <span class="page-link">&raquo;&raquo;</span>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% else %}
+      <p>Você ainda não está seguindo ninguém ou os usuários que você segue ainda não postaram casos clínicos.</p>
+      <p><a href="{% url 'buscar_usuarios' %}">Encontre usuários para seguir.</a></p>
+    {% endif %}
+  </div>
 {% endblock %}

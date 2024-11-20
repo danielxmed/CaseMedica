@@ -1,12 +1,15 @@
+<!-- casos/templates/casos/editar_caso.html -->
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+
 {% block content %}
-<div class="container">
-  <h2 class="text-center" style="color: #4CAF50;">{% if form.instance.pk %}Editar Caso Clínico{% else %}Novo Caso Clínico{% endif %}</h2>
-  <form method="POST" class="form-style">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary" style="background-color: #4CAF50; border: none;">Salvar</button>
-  </form>
-</div>
+  <div class="container mt-5">
+    <h2 class="mb-4">{% if form.instance.pk %}Editar Caso Clínico{% else %}Novo Caso Clínico{% endif %}</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary mt-2">Salvar</button>
+      <a href="{% url 'lista_casos' %}" class="btn btn-secondary mt-2">Cancelar</a>
+    </form>
+  </div>
 {% endblock %}
