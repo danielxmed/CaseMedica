@@ -4,37 +4,73 @@
 <head>
     <meta charset="UTF-8">
     <title>CaseMedica</title>
-    <!-- Adicione links para CSS e bibliotecas aqui -->
+    <!-- Links para CSS e bibliotecas -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
-    <header>
-        <nav>
-            <!-- Navegação -->
-            <a href="{% url 'home' %}">Home</a>
+    <!-- Barra de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">CaseMedica</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'lista_casos' %}">Casos Clínicos</a>
+            </li>
             {% if user.is_authenticated %}
-                <a href="{% url 'perfil' %}">Meu Perfil</a>
-                <!-- Formulário para Logout -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'perfil' %}">Meu Perfil</a>
+              </li>
+              <li class="nav-item">
                 <form action="{% url 'logout' %}" method="POST" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-link" style="display:inline; padding:0; border:none; background:none;">Sair</button>
+                  {% csrf_token %}
+                  <button type="submit" class="nav-link btn btn-link" style="display:inline; padding:0; border:none; background:none;">Sair</button>
                 </form>
+              </li>
             {% else %}
-                <a href="{% url 'login' %}">Entrar</a>
-                <a href="{% url 'signup' %}">Registrar</a>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'signup' %}">Registrar</a>
+              </li>
             {% endif %}
-        </nav>
-    </header>
-    <main>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mensagens de Feedback -->
+    {% if messages %}
+      <div class="container mt-2">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Conteúdo Principal -->
+    <main class="container mt-4">
         {% block content %}{% endblock %}
     </main>
-    <footer>
-        <!-- Rodapé -->
-        <p>&copy; 2024 CaseMedica</p>
-    </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Rodapé -->
+    <footer class="bg-light text-center text-lg-start mt-4">
+      <div class="text-center p-3">
+        &copy; 2024 CaseMedica
+      </div>
+    </footer>
+
+    <!-- Scripts JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

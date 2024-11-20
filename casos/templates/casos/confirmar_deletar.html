@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="text-center" style="color: #4CAF50;">Confirmar Deleção</h2>
+  <p class="text-center">Você tem certeza de que deseja deletar o caso clínico <strong>"{{ caso.titulo }}"</strong>?</p>
+  <form method="POST" class="text-center">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Deletar</button>
+    <a href="{% url 'detalhe_caso' caso.pk %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'crispy_forms',
     'crispy_bootstrap5',
-
+    'casos',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'

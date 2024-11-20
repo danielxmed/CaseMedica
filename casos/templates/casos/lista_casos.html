@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="text-center" style="color: #4CAF50;">Casos Clínicos</h2>
+  {% for caso in casos %}
+    <div class="caso" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+      <h3><a href="{% url 'detalhe_caso' caso.pk %}" style="color: #4CAF50;">{{ caso.titulo }}</a></h3>
+      <p>Publicado em {{ caso.data_publicacao }} por {{ caso.autor.username }}</p>
+      <p>{{ caso.descricao|truncatewords:30 }}</p>
+    </div>
+  {% empty %}
+    <p class="text-center">Nenhum caso clínico publicado ainda.</p>
+  {% endfor %}
+  {% if user.is_authenticated %}
+    <div class="text-center mt-3">
+      <a href="{% url 'novo_caso' %}" class="btn btn-primary" style="background-color: #4CAF50; border: none;">Novo Caso Clínico</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
