@@ -25,6 +25,20 @@
     <p>{{ caso.conclusao }}</p>
   {% endif %}
 
+  <ul class="list-group mt-4">
+    {% for comentario in caso.comentarios.all %}
+      <li class="list-group-item">
+        <div class="d-flex align-items-center">
+          <img src="{{ comentario.autor.perfil.imagem_perfil.url }}" class="rounded-circle mr-3" width="50" height="50" alt="Imagem de perfil de {{ comentario.autor.username }}">
+          <div>
+            <strong>{{ comentario.autor.username }}</strong> em {{ comentario.data_publicacao|date:"d/m/Y H:i" }}
+            <p>{{ comentario.conteudo }}</p>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
   <!-- Botões de Curtir e Comentários -->
   <div class="d-flex justify-content-between align-items-center mt-3">
     <!-- Botão de Curtir -->

@@ -59,7 +59,6 @@ def deixar_de_seguir_usuario(request, username):
     messages.success(request, f'Você deixou de seguir {user_to_unfollow.username}.')
     return redirect('visualizar_perfil', username=username)
 
-
 def buscar_usuarios(request):
     query = request.GET.get('q')
     resultados = User.objects.filter(username__icontains=query) if query else None
@@ -75,3 +74,16 @@ def lista_seguindo(request, username):
     perfil = user.perfil
     seguindo = perfil.seguindo.all()
     return render(request, 'usuarios/lista_seguindo.html', {'user': user, 'seguindo': seguindo})
+
+@login_required
+def editar_perfil(request):
+    perfil = request.user.perfil
+    if request.method == 'POST':
+        form = PerfilUpdateForm(request.POST, request.FILES, instance=perfil)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Seu perfil foi atualizado com sucesso!')
+            return redirect('visualizar_perfil', username=request.user.username)
+    else:
+        form = PerfilUpdateForm(instance=perfil)
+    return render(request, 'usuarios/editar_perfil.html', {'form': form})

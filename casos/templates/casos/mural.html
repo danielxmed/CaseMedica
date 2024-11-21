@@ -19,6 +19,13 @@
               Publicado em {{ caso.data_publicacao|date:"d/m/Y H:i" }} por 
               <a href="{% url 'visualizar_perfil' caso.autor.username %}">{{ caso.autor.username }}</a>
             </h6>
+            <div class="d-flex align-items-center mb-2">
+              <img src="{{ caso.autor.perfil.imagem_perfil.url }}" class="rounded-circle mr-2" width="50" height="50" alt="Imagem de perfil de {{ caso.autor.username }}">
+              <div>
+                <h5 class="mb-0"><a href="{% url 'visualizar_perfil' caso.autor.username %}">{{ caso.autor.username }}</a></h5>
+                <small class="text-muted">Publicado em {{ caso.data_publicacao|date:"d/m/Y H:i" }}</small>
+              </div>
+            </div>
             <p class="card-text">{{ caso.descricao|truncatewords:30 }}</p>
             {% if caso.legenda_imagem %}
               <p class="card-text"><small class="text-muted">{{ caso.legenda_imagem }}</small></p>
