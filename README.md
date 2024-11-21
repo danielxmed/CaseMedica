@@ -1,4 +1,4 @@
-# **CaseMedica**
+# **CaseMedica** (README.md está desatualizado por enquanto)
 
 ## **Índice**
 
